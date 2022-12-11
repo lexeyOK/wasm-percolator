@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+  </head>
+  <body>
+    <canvas id="demo-canvas"></canvas>
+    <button id="render">render</button>
+    <!-- Note the usage of `type=module` here as this is an ES6 module -->
+    <script type="module">
+      import init, { render } from "./pkg/bare_metal_wasm.js";
+      async function run() {
+        await init();
+          const width = 600;
+  const height = 600;
+
+  const canvas = document.getElementById("demo-canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  document.querySelector("#render").onclick=()=>{
+  const image = new ImageData(
+            new Uint8ClampedArray(render().buffer),
+            width,
+        );
+  ctx.putImageData(image,0,0);};
+}
+
+      run();
+    </script>
+  </body>
+</html>
+

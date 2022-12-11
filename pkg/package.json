@@ -1,0 +1,12 @@
+{
+  "name": "bare-metal-wasm",
+  "version": "0.1.0",
+  "files": [
+    "bare_metal_wasm_bg.wasm",
+    "bare_metal_wasm.js",
+    "bare_metal_wasm.d.ts"
+  ],
+  "module": "bare_metal_wasm.js",
+  "types": "bare_metal_wasm.d.ts",
+  "sideEffects": false
+}
