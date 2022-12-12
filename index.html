@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
-  </head>
-  <body>
-    <canvas id="demo-canvas"></canvas>
-    <button id="render">render</button>
-    <!-- Note the usage of `type=module` here as this is an ES6 module -->
-    <script type="module">
-      import init, { render } from "./pkg/bare_metal_wasm.js";
-      async function run() {
-        await init();
-          const width = 600;
-  const height = 600;
 
-  const canvas = document.getElementById("demo-canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-  document.querySelector("#render").onclick=()=>{
-  const image = new ImageData(
-            new Uint8ClampedArray(render().buffer),
-            width,
-        );
-  ctx.putImageData(image,0,0);};
-}
+<head lang="en">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>wasm-percolator</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+	<link rel="stylesheet" href="style.css">
+</head>
 
-      run();
-    </script>
-  </body>
-</html>
+<body>
+	<main>
+		<h1>Wasm percolation demo in Rust.</h1>
+		<p>This is demo of rust code executing in browser and rendering percolation image with canvas.</p>
+		<canvas id="canvas"></canvas>
+		<form id="form">
+			<label for="seed">seed: </label>
+			<input type="number" id="seed" min="1" max ="4294967295" placeholder="Your seed">
+			<label for="use_seed">use seed: </label>
+			<input type="checkbox" id="use_seed">
+			<button id="render" type="submit">render</button>
+		</form>
 
+		<script type="module" src="index.js"></script>
+	</main>
+</body>

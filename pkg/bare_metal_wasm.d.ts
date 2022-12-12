@@ -1,19 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+* @param {number} seed
 * @returns {Uint32Array}
 */
-export function render(): Uint32Array;
+export function render(seed: number): Uint32Array;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly render: (a: number) => void;
+  readonly render: (a: number, b: number) => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
   readonly __wbindgen_free: (a: number, b: number) => void;
-  readonly __wbindgen_malloc: (a: number) => number;
-  readonly __wbindgen_realloc: (a: number, b: number, c: number) => number;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;
