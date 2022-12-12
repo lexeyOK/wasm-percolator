@@ -13,11 +13,13 @@ p {
 }
 
 main {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1em;
   margin: 2em;
 }
 
 #canvas{
   background-color: black;
+  max-width: 600px;
 }
