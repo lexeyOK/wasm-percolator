@@ -5,33 +5,39 @@ use wasm_bindgen::prelude::*;
 const WIDTH: usize = 600;
 const HEIGHT: usize = 600;
 
-#[wasm_bindgen(inline_js = "export function gen_bool(prob){return Math.random()>prob}")]
-extern "C" {
-    fn gen_bool(prob: f32) -> bool;
-}
+#[global_allocator]
+static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-pub fn render() -> Box<[u32]> {
-    console_error_panic_hook::set_once();
-    let mut buffer = vec![0;WIDTH*HEIGHT];
-    let field = init_random();
+pub fn render(seed: u32) -> Box<[u32]> {
+    let mut buffer = vec![0; WIDTH * HEIGHT];
+    let field = init_random(seed);
     for y in 0..WIDTH {
         for x in 0..HEIGHT {
-            let val = ((field[y][x]) % 256) as u32;
             buffer[x + y * HEIGHT] =
-                ((13 * val) * 0x10000 + (17 * val) * 0x100 + (15 * val)) * 0x100 + 0xff;
+                ((xor_shift32(field[y][x] as u32 + seed) >> 8) << 8 | 0xff).to_be();
         }
     }
     buffer.into_boxed_slice()
 }
 
-fn init_random() -> Vec<Vec<usize>> {
+fn xor_shift32(state: u32) -> u32 {
+    let mut x = state.wrapping_mul(0x2545F495);
+    x ^= x << 13;
+    x ^= x >> 17;
+    x ^= x << 5;
+    x
+}
+
+fn init_random(seed: u32) -> Vec<Vec<usize>> {
     let mut right = vec![vec![false; WIDTH + 1]; HEIGHT + 1];
     let mut down = vec![vec![false; WIDTH + 1]; HEIGHT + 1];
+    let mut state = seed;
     for x in 1..WIDTH {
         for y in 1..HEIGHT {
-            right[y][x] = gen_bool(0.5);
-            down[y][x] = gen_bool(0.5);
+            state = xor_shift32(state);
+            right[y][x] = state % 2 == 0;
+            down[y][x] = (state >> 1) % 2 == 0;
         }
     }
     (1..=HEIGHT).for_each(|y| {
@@ -85,17 +91,15 @@ fn find_connected_components(right: Vec<Vec<bool>>, down: Vec<Vec<bool>>) -> Vec
     let mut output_lables = vec![0usize; WIDTH * HEIGHT];
     let mut count = 0;
     for x in 0..WIDTH {
-        (0..HEIGHT).for_each(|y| {
-            let label = field[y][x];
-            let root = eq_set.find(label);
-            let mut output_lable = output_lables[root];
-            if output_lable < 1 {
-                output_lable = count;
+        for y in 0..HEIGHT {
+            let root = eq_set.find(field[y][x]);
+            let output_lable = &mut output_lables[root];
+            if *output_lable == 0 {
+                *output_lable = count;
                 count += 1;
             }
-            output_lables[root] = output_lable;
-            field[y][x] = output_lable;
-        });
+            field[y][x] = *output_lable;
+        }
     }
     field
 }
