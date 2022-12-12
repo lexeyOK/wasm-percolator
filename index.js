@@ -10,7 +10,6 @@ async function run() {
 	canvas.width = width;
 	canvas.height = height;
 	const ctx = canvas.getContext("2d");
-	use_seed_check.ou
 	document.getElementById("form").addEventListener('submit', (event) => {
 		event.preventDefault();
 		let seed = 1;
