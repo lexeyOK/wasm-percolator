@@ -1,4 +1,4 @@
-import init, { render } from "./pkg/bare_metal_wasm.js";
+import init, { render } from "./pkg/wasm_perocator.js";
 async function run() {
 	await init();
 	const width = 600;
@@ -16,7 +16,7 @@ async function run() {
 		if (use_seed_check.checked) {
 			seed = Number(seed_input.value);
 		}
-		else{
+		else {
 			seed = window.crypto.getRandomValues(new Uint32Array(1))[0];
 		}
 		const image = new ImageData(

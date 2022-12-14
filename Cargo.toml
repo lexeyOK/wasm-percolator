@@ -1,15 +1,12 @@
 [package]
-name = "bare-metal-wasm"
+name = "wasm-perocator"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-disjoint-sets = "0.4.2"
 wasm-bindgen = "0.2.83"
 wee_alloc = "0.4.5"
 
