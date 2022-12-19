@@ -32,13 +32,19 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v2
+      - name: Setup Rust
+        uses: ATiltedTree/setup-rust@v1.0.5
+        with: 
+          rust-version: stable
+          targets: wasm32-unknown-unknown
+      - name: wasm-pack-action
+        uses: jetli/wasm-pack-action@v0.4.0
       - name: Compile artifacts
         run: './build.sh'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
-          path: 'dist'
+          path: 'dist/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
