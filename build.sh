@@ -1,10 +1,12 @@
 #!/bin/bash
 
 set -euo pipefail
-
-TARGET=web
-
-cargo fmt
-wasm-pack build --target $TARGET --no-typescript 
-rm -rf pkg/.gitignore pkg/package.json pkg/README.md
-ls -l pkg/*.wasm
+NAME=wasm_perocator.wasm
+TARGET=wasm32-unknown-unknown
+BINARY=target/$TARGET/release/$NAME
+DIR=dist
+cargo build --target $TARGET --release
+wasm-strip $BINARY
+mkdir -p $DIR
+wasm-opt -o $DIR/$NAME -Oz $BINARY
+ls -l $DIR/$NAME
