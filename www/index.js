@@ -22,10 +22,10 @@ async function run() {
 			seed = window.crypto.getRandomValues(new Uint32Array(1))[0];
 		}
 		const image = new ImageData(
-			new Uint8ClampedArray(instance.exports.memory, instance.exports.BUFFER.value, 4 * width * height),
+			new Uint8ClampedArray(instance.exports.memory.buffer, instance.exports.BUFFER.value, 4 * width * height),
 			width,
 		);
-		render(seed);
+		instance.exports.render(seed);
 		ctx.putImageData(image, 0, 0);
 		seed_input.value = seed;
 	})
