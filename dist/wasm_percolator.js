@@ -108,7 +108,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('wasm_perocator_bg.wasm', import.meta.url);
+        input = new URL('wasm_percolator_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 

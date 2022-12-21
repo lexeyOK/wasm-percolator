@@ -1,4 +1,4 @@
-import init, { render } from "./wasm_perocator.js";
+import init, { render } from "./wasm_percolator.js";
 async function run() {
 	await init();
 	const width = 600;
